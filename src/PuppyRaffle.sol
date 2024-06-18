@@ -77,16 +77,15 @@ contract PuppyRaffle is ERC721, Ownable {
     /// @notice duplicate entrants are not allowed
     /// @param newPlayers the list of players to enter the raffle
     function enterRaffle(address[] memory newPlayers) public payable {
+        //what if it's 0?
         require(msg.value == entranceFee * newPlayers.length, "PuppyRaffle: Must send enough to enter raffle");
         for (uint256 i = 0; i < newPlayers.length; i++) {
+           // q what resets the play array
             players.push(newPlayers[i]);
         }
 
         // Check for duplicates
-        for (uint256 i = 0; i < players.length - 1; i++) {
-            for (uint256 j = i + 1; j < players.length; j++) {
-                require(players[i] != players[j], "PuppyRaffle: Duplicate player");
-            }
+        //@audit DoS
         }
         emit RaffleEnter(newPlayers);
     }
@@ -113,6 +112,9 @@ contract PuppyRaffle is ERC721, Ownable {
                 return i;
             }
         }
+        // what if the player is at index 0?
+        //@audit if a playeris at index 0, it will return 0 and a player may think
+       // they're not active
         return 0;
     }
 
@@ -213,4 +215,4 @@ contract PuppyRaffle is ERC721, Ownable {
             )
         );
     }
-}
+
