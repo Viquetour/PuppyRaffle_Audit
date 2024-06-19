@@ -86,8 +86,9 @@ contract PuppyRaffle is ERC721, Ownable {
 
         // Check for duplicates
         //@audit DoS
-        }
         emit RaffleEnter(newPlayers);
+        }
+          
     }
 
     /// @param playerIndex the index of the player to refund. You can find it externally by calling `getActivePlayerIndex`
@@ -100,7 +101,7 @@ contract PuppyRaffle is ERC721, Ownable {
         payable(msg.sender).sendValue(entranceFee);
 
         players[playerIndex] = address(0);
-        emit RaffleRefunded(playerAddress);
+         emit RaffleRefunded(playerAddress);
     }
 
     /// @notice a way to get the index in the array
