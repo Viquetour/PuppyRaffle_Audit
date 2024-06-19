@@ -98,7 +98,9 @@ contract PuppyRaffle is ERC721, Ownable {
         require(playerAddress == msg.sender, "PuppyRaffle: Only the player can refund");
         require(playerAddress != address(0), "PuppyRaffle: Player already refunded, or is not active");
 
-        payable(msg.sender).sendValue(entranceFee);
+
+        //@audit Reentrancy
+         payable(msg.sender).sendValue(entranceFee);
 
         players[playerIndex] = address(0);
          emit RaffleRefunded(playerAddress);
